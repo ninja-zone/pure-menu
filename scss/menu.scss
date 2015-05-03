@@ -1,0 +1,88 @@
+@import "compass/css3/columns";
+
+$break-after: 5;
+$column-height: 40px;
+$arrow: " »";
+$maxPositions: 10;
+
+
+nav {
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    ul.menu {
+        height: $column-height;
+        background: #F90;
+        border: 1px solid #F00;
+        border-left: 0;
+        position: relative;
+        & > li {
+            @for $i from 1 through $maxPositions {
+                &:first-child:nth-last-child(#{$i}),
+                &:first-child:nth-last-child(#{$i}) ~ li {
+                    width: #{100% / $i}
+                }
+            } 
+            & > a:after {
+                content: $arrow;
+                float: right;
+            }
+            & > a:only-child:after { content: ""; }
+            &:before {
+                height: $column-height;
+                border-left: 1px solid #F00;
+                position: absolute;
+                content: "";
+            }
+        }
+        li {
+            float: left;
+            &:hover > ul { display: block; }
+            &:hover > a { color: #F00; }
+            a {
+                line-height: $column-height;
+                padding: 0 20px;
+                display: block;
+                text-decoration: none;
+                background: #333;
+                color: #FFF;
+                white-space: nowrap;
+                &:hover { color: #F00; }
+            }
+        }
+        ul {
+            width: inherit;
+            position: absolute;
+            display: none;
+            z-index: 100;
+            ul {
+                margin-left: 100%;
+                margin-top: -($column-height);
+            }
+            li {
+                width: 100%;
+                position: relative;
+                float: none;
+                & > a:after {
+                    content: $arrow;
+                    float: right;
+                }
+                & > a:only-child:after { content: ""; }
+            }
+            ul ul {
+                height: ($column-height * $break-after);
+                @include columns(3);
+                @include column-gap(0);
+            }
+        }
+    }
+}
+
+p {
+    line-height: 25px;
+    text-align: justify;
+    padding: 10px;
+    clear: both;
+}
